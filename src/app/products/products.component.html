@@ -1,0 +1,34 @@
+<div class="container">
+  
+
+      <app-product-form [product]="selectedProduct" (refreshproduct)="loadProducts()"></app-product-form>
+      
+      <h3>Product List</h3>
+      <hr>
+      <input type="text" class="form-control mb-3" placeholder="Search products..." [(ngModel)]="searchQuery" (input)="onSearch(searchQuery)">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{ product.id }}</td>
+          <td>{{ product.name }}</td>
+          <td>{{ product.price }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>
+            <button class="btn btn-warning" (click)="editProduct( product)">Edit</button>&nbsp;
+            <button class="btn btn-danger" (click)="clickMethod(product.id, product.name)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-primary" (click)="currentPage = currentPage - 1;loadProducts();" [disabled]="currentPage <= 1">Previous</button>&nbsp;
+    <button class="btn btn-primary"  (click)="currentPage = currentPage + 1;loadProducts();" [disabled]="products.length == 0">Next</button>
+  </div>
