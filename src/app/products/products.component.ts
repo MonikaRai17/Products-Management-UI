@@ -1,6 +1,5 @@
 // products.component.ts
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../services/product.service';
 import { Product } from '../Models/product.model';
 import {ReactiveFormsModule} from "@angular/forms";
@@ -23,7 +22,7 @@ export class ProductsComponent implements OnInit {
   currentPage: number = 1;
   itemsPerPage: number = 5;
   selectedProduct: Product | null = null;
-  
+  displayStyle = "none";
  
 
   constructor( private productService: ProductService) {
@@ -92,4 +91,11 @@ export class ProductsComponent implements OnInit {
       this.successMessage="";
     }, 5000);
   }
+
+  openPopup() { 
+    this.displayStyle = "block"; 
+  } 
+  closePopup() { 
+    this.displayStyle = "none"; 
+  } 
 }

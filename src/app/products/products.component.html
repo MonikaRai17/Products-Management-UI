@@ -1,8 +1,27 @@
-<div class="container">
-  
-
-      <app-product-form [product]="selectedProduct" (refreshproduct)="loadProducts()"></app-product-form>
-      
+    
+  <!-- Modal -->
+  <div id="myModal" class="modal modal-dialog" role="dialog" [ngStyle]="{'display':displayStyle}">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+           <button  type="button" (click)="closePopup()" class="btn pull-right" data-dismiss="modal">×</button>
+        </div> 
+        <div class="modal-body">
+          <app-product-form [product]="selectedProduct" (refreshproduct)="loadProducts()"></app-product-form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="closePopup()" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+   <div class="container">
+       <!-- Trigger button -->
+      <button type="button" class="btn btn-primary pull-right" data-toggle="modal" (click)="openPopup()" >
+        Add Product
+      </button>
       <h3>Product List</h3>
       <hr>
       <input type="text" class="form-control mb-3" placeholder="Search products..." [(ngModel)]="searchQuery" (input)="onSearch(searchQuery)">
@@ -23,7 +42,7 @@
           <td>{{ product.price }}</td>
           <td>{{ product.quantity }}</td>
           <td>
-            <button class="btn btn-warning" (click)="editProduct( product)">Edit</button>&nbsp;
+            <button class="btn btn-warning" (click)="editProduct( product);openPopup();">Edit</button>&nbsp;
             <button class="btn btn-danger" (click)="clickMethod(product.id, product.name)">Delete</button>
           </td>
         </tr>
@@ -32,3 +51,5 @@
     <button class="btn btn-primary" (click)="currentPage = currentPage - 1;loadProducts();" [disabled]="currentPage <= 1">Previous</button>&nbsp;
     <button class="btn btn-primary"  (click)="currentPage = currentPage + 1;loadProducts();" [disabled]="products.length == 0">Next</button>
   </div>
+
+ 
