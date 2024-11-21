@@ -34,7 +34,6 @@ export class ProductsComponent implements OnInit {
   }
 
   loadProducts() {
-   
     this.productService.getProducts(this.searchQuery,this.currentPage, this.itemsPerPage).subscribe(
       (data) => {
         this.products = data;
@@ -42,7 +41,6 @@ export class ProductsComponent implements OnInit {
       (error) => {
         console.log(error);
         this.errorMessage = error.statusText;
-        
       }
       
     );
@@ -52,12 +50,13 @@ export class ProductsComponent implements OnInit {
 
   onSearch(query: string): void {
     this.searchQuery = query;
+    this.currentPage = 1;
+    this.itemsPerPage = 5; 
     this.loadProducts();
   }
 
   editProduct(product: Product){
     this.selectedProduct = product;
-     
   }
 
   clickMethod(id: any, name: any) {
