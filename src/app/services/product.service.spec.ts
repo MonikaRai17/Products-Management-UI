@@ -25,7 +25,7 @@ describe('ProductService', () => {
       "quantity": 100
     }
   ];
-
+  var apiUrl ="http://localhost:5201/api/Products";
   afterEach(() => {
     httpTestingController.verify();
   });
@@ -33,7 +33,7 @@ describe('ProductService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule, HttpClientTestingModule],
-      providers: [ProductService, { provide: 'url', useValue:'apiUrl' }]
+      providers: [ProductService]
 
     });
     service = TestBed.inject(ProductService);
@@ -45,12 +45,13 @@ describe('ProductService', () => {
   });
 
   it('getAll should make a GET HTTP request and return all data items', () => {
-    var searchQuery ="", page = 1, limit = 10;
+    var searchQuery ="", page = 1, limit = 5;
     service.getProducts(searchQuery, page, limit).subscribe(res => {
       expect(res).toEqual(mockData); 
       expect(res.length).toBe(2); 
      }); 
-    const req = httpTestingController.expectOne('apiUrl');
+     
+    const req = httpTestingController.expectOne(apiUrl+'?searchItem='+searchQuery+'&_page='+page+'&_limit='+limit);
     expect(req.request.method).toBe('GET');
     expect(req.cancelled).toBeFalsy(); 
     expect(req.request.responseType).toEqual('json');
@@ -62,7 +63,7 @@ describe('ProductService', () => {
     service.getaProduct(1).subscribe(res => {
       expect(res).toEqual(mockData); 
      }); 
-    const req = httpTestingController.expectOne('apiUrl/1');
+    const req = httpTestingController.expectOne(apiUrl+'/1');
     expect(req.request.method).toBe('GET');
     expect(req.cancelled).toBeFalsy(); 
     expect(req.request.responseType).toEqual('json');
@@ -74,7 +75,7 @@ describe('ProductService', () => {
     service.deleteProduct(1).subscribe(res => {
       expect(res).toBe(1); 
      }); 
-    const req = httpTestingController.expectOne('apiUrl/1', 'delete to api');
+    const req = httpTestingController.expectOne(apiUrl+'/1', 'delete to api');
     expect(req.request.method).toBe('DELETE');
     expect(req.cancelled).toBeFalsy(); 
     expect(req.request.responseType).toEqual('json');
@@ -82,13 +83,13 @@ describe('ProductService', () => {
     httpTestingController.verify();
    });
 
-   it('update should make a POST HTTP request with id appended to end of url and resource as body', () => {
+   it('update should make a PUT HTTP request with id appended to end of url and resource as body', () => {
     const updateObj = {id:1, name: "updatedName", price:1, quantity:1 };
     service.updateProduct(1, updateObj).subscribe(res => {
       expect(res.name).toBe('updatedName'); 
      }); 
-    const req = httpTestingController.expectOne('apiUrl/1', 'post to api');
-    expect(req.request.method).toBe('POST');
+    const req = httpTestingController.expectOne(apiUrl+'/1', 'put to api');
+    expect(req.request.method).toBe('PUT');
     expect(req.request.body).toBe(updateObj);
     expect(req.cancelled).toBeFalsy(); 
     expect(req.request.responseType).toEqual('json');
@@ -101,7 +102,7 @@ describe('ProductService', () => {
     service.addProduct(createObj).subscribe(res => {
       expect(res.name).toBe('mock data'); 
      }); 
-    const req = httpTestingController.expectOne('apiUrl', 'post to api');
+    const req = httpTestingController.expectOne(apiUrl, 'post to api');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toBe(createObj);
     expect(req.cancelled).toBeFalsy(); 
